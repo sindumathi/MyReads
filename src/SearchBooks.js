@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import ListBooks from './ListBooks';
+import PropTypes from 'prop-types';
 
 class SearchBooks extends Component {
   state = { query: '', books: [] };
@@ -67,5 +68,9 @@ class SearchBooks extends Component {
     );
   }
 }
+
+SearchBooks.propTypes = {
+  updateBookShelf: PropTypes.func.isRequired,
+};
 
 export default SearchBooks;
