@@ -7,21 +7,30 @@ import PropTypes from 'prop-types';
 class SearchBooks extends Component {
   state = { query: '', books: [] };
 
+  //Controlled Component: Added search query to state and fetch books in call back based on the search text.
   handleInputChange = (event) => {
     const { value } = event.target;
     this.setState(
       () => ({ query: value }),
       () => {
-        BooksAPI.search(this.state.query).then((books) => {
-          const filteredBooks = this.props.filteredBooks();
-          this.updateShelf(books, filteredBooks);
+        if (this.state.query) {
+          BooksAPI.search(this.state.query).then((books) => {
+            const filteredBooks = this.props.filteredBooks();
+            books && !books.error && this.updateShelf(books, filteredBooks);
+            this.setState(() => ({
+              books: books && books.length > 0 ? books : [],
+            }));
+          });
+        } else {
           this.setState(() => ({
-            books: books && books.length > 0 ? books : [],
+            books: [],
           }));
-        });
+        }
       }
     );
   };
+
+  //Update Book Shelf
   updateShelf = (books, filteredBooks) => {
     filteredBooks.forEach((fbook) => {
       const book = books.find((book) => {
@@ -39,18 +48,10 @@ class SearchBooks extends Component {
     return (
       <div className='search-books'>
         <div className='search-books-bar'>
-          <Link to='/listmybooks' className='close-search'>
+          <Link to='/' className='close-search'>
             Close
           </Link>
           <div className='search-books-input-wrapper'>
-            {/*
-            NOTES: The search from BooksAPI is limited to a particular set of search terms.
-            You can find these search terms here:
-            https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-      
-            However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-            you don't find a specific author or title. Every search is limited by search terms.
-          */}
             <input
               type='text'
               placeholder='Search by title or author'

@@ -3,6 +3,7 @@ import ListBooks from './ListBooks';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+//Fetch books to display in the shelves.
 class ListMyBooks extends Component {
   state = { shelves: ['currentlyReading', 'wantToRead', 'read'] };
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+//stateless functional component that displays books for both search and main page.
+//Empty imageLinks are checked.
+//Displays multiple authors.
 const ListBooks = (props) => {
   const { books, updateBookShelf } = props;
   return books.map((book) => (
